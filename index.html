@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSPORTE BRAZ - Administración de Vehículos de Carga</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>TRANSPORTE BRAZ - Administración de Vehículos de Carga</h1>
+    <form id="vehiculoForm">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+        
+        <label for="empresa">Nombre de la Empresa:</label>
+        <input type="text" id="empresa" name="empresa" required>
+        
+        <label for="chofer">Nombre del Chofer:</label>
+        <input type="text" id="chofer" name="chofer" required>
+        
+        <label for="placa">Placa del Vehículo:</label>
+        <input type="text" id="placa" name="placa" required>
+        
+        <label for="salida">Lugar de Salida:</label>
+        <input type="text" id="salida" name="salida" required>
+        
+        <label for="destino">Destino:</label>
+        <input type="text" id="destino" name="destino" required>
+        
+        <label for="viaticos">Viáticos (USD):</label>
+        <input type="number" id="viaticos" name="viaticos" required>
+        
+        <label for="gastos">Gastos Adicionales (USD):</label>
+        <input type="number" id="gastos" name="gastos" required>
+
+        <label for="pago">Pago al Chofer (USD):</label>
+        <input type="number" id="pago" name="pago" required>
+
+        <label for="ganancia">Ganancia por Realizar el Viaje (USD):</label>
+        <input type="number" id="ganancia" name="ganancia" required>
+
+        <label for="estadoPago">Estado de Pago:</label>
+        <select id="estadoPago" name="estadoPago" required>
+            <option value="Pagado">Pagado</option>
+            <option value="Falta por cobrar">Falta por cobrar</option>
+        </select>
+        
+        <button type="submit">Agregar Viaje</button>
+    </form>
+    <h2>Reporte de Viajes</h2>
+    <div id="reporte"></div>
+    <script src="script.js"></script>
+</body>
+</html>
