@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRANSPORTE BRAZ - Administración de Vehículos de Carga</title>
+    <title>TRANSPORTE BRAZ</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>TRANSPORTE BRAZ - Administración de Vehículos de Carga</h1>
+    <h1>TRANSPORTE BRAZ</h1>
     <form id="vehiculoForm">
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" required>
@@ -18,7 +18,7 @@
         <label for="chofer">Nombre del Chofer:</label>
         <input type="text" id="chofer" name="chofer" required>
         
-        <label for="placa">Placa del Vehículo:</label>
+        <label for="placa">Placa del VehÃ­culo:</label>
         <input type="text" id="placa" name="placa" required>
         
         <label for="salida">Lugar de Salida:</label>
@@ -27,8 +27,14 @@
         <label for="destino">Destino:</label>
         <input type="text" id="destino" name="destino" required>
         
-        <label for="viaticos">Viáticos (USD):</label>
+        <label for="viaticos">ViÃ¡ticos (USD):</label>
         <input type="number" id="viaticos" name="viaticos" required>
+
+        <label for="gasoil">Gasoil (USD):</label>
+        <input type="number" id="gasoil" name="gasoil" required>
+
+        <label for="litrosGasoil">Litros Consumidos de Gasoil:</label>
+        <input type="number" id="litrosGasoil" name="litrosGasoil" required>
         
         <label for="gastos">Gastos Adicionales (USD):</label>
         <input type="number" id="gastos" name="gastos" required>
@@ -36,8 +42,8 @@
         <label for="pago">Pago al Chofer (USD):</label>
         <input type="number" id="pago" name="pago" required>
 
-        <label for="ganancia">Ganancia por Realizar el Viaje (USD):</label>
-        <input type="number" id="ganancia" name="ganancia" required>
+        <label for="entrada">Entrada por Realizar el Servicio (USD):</label>
+        <input type="number" id="entrada" name="entrada" required>
 
         <label for="estadoPago">Estado de Pago:</label>
         <select id="estadoPago" name="estadoPago" required>
