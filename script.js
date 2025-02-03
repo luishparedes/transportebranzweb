@@ -17,65 +17,35 @@ document.getElementById('vehiculoForm').addEventListener('submit', function(even
     
     const gananciasNetas = entrada - viaticos - gasoil - gastos - pago;
     
-    const viaje = {
-        fecha,
-        empresa,
-        chofer,
-        placa,
-        salida,
-        destino,
-        viaticos,
-        gasoil,
-        litrosGasoil,
-        gastos,
-        pago,
-        entrada,
-        estadoPago,
-        gananciasNetas
-    };
-    
-    // Cargar datos existentes
-    let viajes = JSON.parse(localStorage.getItem('viajes')) || [];
-    
-    // Añadir nuevo viaje
-    viajes.push(viaje);
-    
-    // Guardar datos en localStorage
-    localStorage.setItem('viajes', JSON.stringify(viajes));
-    
-    // Mostrar el viaje en el reporte
-    mostrarViaje(viaje);
-    
-    document.getElementById('vehiculoForm').reset();
-});
-
-function mostrarViaje(viaje) {
     const reporteDiv = document.getElementById('reporte');
     const viajeReporte = document.createElement('div');
     
     viajeReporte.innerHTML = `
-        <p><strong>Fecha:</strong> ${viaje.fecha}</p>
-        <p><strong>Empresa:</strong> ${viaje.empresa}</p>
-        <p><strong>Chofer:</strong> ${viaje.chofer}</p>
-        <p><strong>Placa:</strong> ${viaje.placa}</p>
-        <p><strong>Salida:</strong> ${viaje.salida}</p>
-        <p><strong>Destino:</strong> ${viaje.destino}</p>
-        <p><strong>Viáticos (USD):</strong> ${viaje.viaticos}</p>
-        <p><strong>Gasoil (USD):</strong> ${viaje.gasoil}</p>
-        <p><strong>Litros Consumidos de Gasoil:</strong> ${viaje.litrosGasoil}</p>
-        <p><strong>Gastos Adicionales (USD):</strong> ${viaje.gastos}</p>
-        <p><strong>Pago al Chofer (USD):</strong> ${viaje.pago}</p>
-        <p><strong>Entrada por Realizar el Servicio (USD):</strong> ${viaje.entrada}</p>
-        <p><strong>Ganancias Netas (USD):</strong> ${viaje.gananciasNetas}</p>
-        <p class="${viaje.estadoPago === 'Falta por cobrar' ? 'falta-cobrar' : 'pagado'}"><strong>Estado de Pago:</strong> ${viaje.estadoPago}</p>
-        <button onclick="editarViaje(this)" ${viaje.estadoPago === 'Pagado' ? 'disabled' : ''}>Editar</button>
+        <p><strong>Fecha:</strong> ${fecha}</p>
+        <p><strong>Empresa:</strong> ${empresa}</p>
+        <p><strong>Chofer:</strong> ${chofer}</p>
+        <p><strong>Placa:</strong> ${placa}</p>
+        <p><strong>Salida:</strong> ${salida}</p>
+        <p><strong>Destino:</strong> ${destino}</p>
+        <p><strong>Viáticos (USD):</strong> ${viaticos}</p>
+        <p><strong>Gasoil (USD):</strong> ${gasoil}</p>
+        <p><strong>Litros Consumidos de Gasoil:</strong> ${litrosGasoil}</p>
+        <p><strong>Gastos Adicionales (USD):</strong> ${gastos}</p>
+        <p><strong>Pago al Chofer (USD):</strong> ${pago}</p>
+        <p><strong>Entrada por Realizar el Servicio (USD):</strong> ${entrada}</p>
+        <p><strong>Ganancias Netas (USD):</strong> ${gananciasNetas}</p>
+        <p class="${estadoPago === 'Falta por cobrar' ? 'falta-cobrar' : 'pagado'}"><strong>Estado de Pago:</strong> ${estadoPago}</p>
+        <button onclick="editarViaje(this)">Editar</button>
         <button onclick="eliminarViaje(this)">Eliminar</button>
         <button onclick="imprimirViaje(this)">Imprimir</button>
+        <button onclick="enviarViaje(this)">Enviar</button>
         <hr>
     `;
     
     reporteDiv.appendChild(viajeReporte);
-}
+    
+    document.getElementById('vehiculoForm').reset();
+});
 
 function editarViaje(button) {
     const viaje = button.parentElement;
@@ -94,21 +64,11 @@ function editarViaje(button) {
     document.getElementById('estadoPago').value = viaje.querySelector('p:nth-child(14)').innerText.split(': ')[1];
     
     viaje.remove();
-    
-    // Guardar cambios en localStorage
-    let viajes = JSON.parse(localStorage.getItem('viajes')) || [];
-    viajes = viajes.filter(v => v.fecha !== viaje.querySelector('p:nth-child(1)').innerText.split(': ')[1]);
-    localStorage.setItem('viajes', JSON.stringify(viajes));
 }
 
 function eliminarViaje(button) {
     const viaje = button.parentElement;
     viaje.remove();
-    
-    // Eliminar del localStorage
-    let viajes = JSON.parse(localStorage.getItem('viajes')) || [];
-    viajes = viajes.filter(v => v.fecha !== viaje.querySelector('p:nth-child(1)').innerText.split(': ')[1]);
-    localStorage.setItem('viajes', JSON.stringify(viajes));
 }
 
 function imprimirViaje(button) {
@@ -123,8 +83,10 @@ function imprimirViaje(button) {
     printWindow.print();
 }
 
-// Cargar y mostrar viajes al cargar la página
-window.addEventListener('load', function() {
-    const viajes = JSON.parse(localStorage.getItem('viajes')) || [];
-    viajes.forEach(viaje => mostrarViaje(viaje));
-});
+function enviarViaje(button) {
+    const viaje = button.parentElement;
+    const viajeDatos = viaje.innerHTML.replace(/<button.*<\/button>/g, '').replace(/<hr>/g, '');
+    
+    const mailtoLink = `mailto:?subject=Detalles del Viaje&body=${encodeURIComponent(viajeDatos)}`;
+    window.location.href = mailtoLink;
+}
