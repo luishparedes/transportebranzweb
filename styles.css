@@ -68,3 +68,11 @@ button:hover {
     color: green;
     font-weight: bold;
 }
+
+#mensaje-edicion {
+    background-color: #ffffcc; /* Amarillo suave */
+    border: 1px solid #ffcc00; /* Borde amarillo */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
