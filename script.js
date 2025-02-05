@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', cargarDatos); // Cargar datos al cargar la página
+document.addEventListener('DOMContentLoaded', cargarDatos);
 
-let viajes = JSON.parse(localStorage.getItem('viajes')) || []; // Obtener viajes de localStorage o inicializar array vacío
-let editing = false; // Variable para rastrear si se está editando un viaje
-let viajeEditando = null; // Variable para almacenar el viaje que se está editando
+let viajes = JSON.parse(localStorage.getItem('viajes')) || [];
+let editing = false;
+let viajeEditando = null;
 
 document.getElementById('vehiculoForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -32,24 +32,24 @@ function agregarViaje() {
     const gananciasNetas = entrada - viaticos - gasoil - gastos - pago;
 
     const nuevoViaje = {
-        fecha,
-        empresa,
-        chofer,
-        placa,
-        salida,
-        destino,
-        viaticos,
-        gasoil,
-        litrosGasoil,
-        gastos,
-        pago,
-        entrada,
-        gananciasNetas,
-        estadoPago
+        fecha: fecha,
+        empresa: empresa,
+        chofer: chofer,
+        placa: placa,
+        salida: salida,
+        destino: destino,
+        viaticos: viaticos,
+        gasoil: gasoil,
+        litrosGasoil: litrosGasoil,
+        gastos: gastos,
+        pago: pago,
+        entrada: entrada,
+        gananciasNetas: gananciasNetas,
+        estadoPago: estadoPago
     };
 
     viajes.push(nuevoViaje);
-    guardarDatos(); // Guardar en localStorage
+    guardarDatos();
     mostrarReporte();
     document.getElementById('vehiculoForm').reset();
 }
@@ -72,15 +72,11 @@ function editarViaje(index) {
     document.getElementById('entrada').value = viajeEditando.entrada;
     document.getElementById('estadoPago').value = viajeEditando.estadoPago;
 
-    // Eliminar el viaje de la lista
     viajes.splice(index, 1);
     guardarDatos();
     mostrarReporte();
 
-    // Mostrar mensaje de edición
     document.getElementById('mensaje-edicion').style.display = 'block';
-
-    // Cambiar texto del botón a "Guardar Cambios"
     document.querySelector('button[type="submit"]').textContent = 'Guardar Cambios';
 }
 
@@ -107,10 +103,7 @@ function guardarCambios() {
     editing = false;
     viajeEditando = null;
 
-    // Ocultar mensaje de edición
     document.getElementById('mensaje-edicion').style.display = 'none';
-
-    // Cambiar texto del botón a "Agregar Viaje"
     document.querySelector('button[type="submit"]').textContent = 'Agregar Viaje';
 }
 
@@ -134,7 +127,7 @@ function imprimirViaje(index) {
 
 function mostrarReporte() {
     const reporteDiv = document.getElementById('reporte');
-    reporteDiv.innerHTML = ''; // Limpiar reporte
+    reporteDiv.innerHTML = '';
 
     viajes.forEach((viaje, index) => {
         const viajeReporte = document.createElement('div');
