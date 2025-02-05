@@ -1,151 +1,172 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById('vehiculoForm');
-    const reporte = document.getElementById('reporte');
-    const convertirPdf = document.getElementById('convertirPdf');
+document.addEventListener('DOMContentLoaded', cargarDatos); // Cargar datos al cargar la página
 
-    // Cargar datos guardados
-    loadFormData();
+let viajes = JSON.parse(localStorage.getItem('viajes')) || []; // Obtener viajes de localStorage o inicializar array vacío
+let editing = false; // Variable para rastrear si se está editando un viaje
+let viajeEditando = null; // Variable para almacenar el viaje que se está editando
 
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const formData = new FormData(form);
+document.getElementById('vehiculoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        // Guardar datos en localStorage
-        saveFormData(formData);
+    if (editing) {
+        guardarCambios();
+    } else {
+        agregarViaje();
+    }
+});
 
-        const viaje = {
-            fecha: formData.get('fecha'),
-            empresa: formData.get('empresa'),
-            chofer: formData.get('chofer'),
-            placa: formData.get('placa'),
-            salida: formData.get('salida'),
-            destino: formData.get('destino'),
-            viaticos: parseFloat(formData.get('viaticos')),
-            gasoil: parseFloat(formData.get('gasoil')),
-            litrosGasoil: parseFloat(formData.get('litrosGasoil')),
-            gastos: parseFloat(formData.get('gastos')),
-            pago: parseFloat(formData.get('pago')),
-            entrada: parseFloat(formData.get('entrada')),
-            estadoPago: formData.get('estadoPago'),
-            gananciasNetas: parseFloat(formData.get('entrada')) - parseFloat(formData.get('viaticos')) - parseFloat(formData.get('gasoil')) - parseFloat(formData.get('gastos')) - parseFloat(formData.get('pago'))
-        };
+function agregarViaje() {
+    const fecha = document.getElementById('fecha').value;
+    const empresa = document.getElementById('empresa').value;
+    const chofer = document.getElementById('chofer').value;
+    const placa = document.getElementById('placa').value;
+    const salida = document.getElementById('salida').value;
+    const destino = document.getElementById('destino').value;
+    const viaticos = parseFloat(document.getElementById('viaticos').value);
+    const gasoil = parseFloat(document.getElementById('gasoil').value);
+    const litrosGasoil = parseFloat(document.getElementById('litrosGasoil').value);
+    const gastos = parseFloat(document.getElementById('gastos').value);
+    const pago = parseFloat(document.getElementById('pago').value);
+    const entrada = parseFloat(document.getElementById('entrada').value);
+    const estadoPago = document.getElementById('estadoPago').value;
 
-        const viajeElement = document.createElement('div');
-        viajeElement.innerHTML = `
+    const gananciasNetas = entrada - viaticos - gasoil - gastos - pago;
+
+    const nuevoViaje = {
+        fecha,
+        empresa,
+        chofer,
+        placa,
+        salida,
+        destino,
+        viaticos,
+        gasoil,
+        litrosGasoil,
+        gastos,
+        pago,
+        entrada,
+        gananciasNetas,
+        estadoPago
+    };
+
+    viajes.push(nuevoViaje);
+    guardarDatos(); // Guardar en localStorage
+    mostrarReporte();
+    document.getElementById('vehiculoForm').reset();
+}
+
+function editarViaje(index) {
+    editing = true;
+    viajeEditando = viajes[index];
+
+    document.getElementById('fecha').value = viajeEditando.fecha;
+    document.getElementById('empresa').value = viajeEditando.empresa;
+    document.getElementById('chofer').value = viajeEditando.chofer;
+    document.getElementById('placa').value = viajeEditando.placa;
+    document.getElementById('salida').value = viajeEditando.salida;
+    document.getElementById('destino').value = viajeEditando.destino;
+    document.getElementById('viaticos').value = viajeEditando.viaticos;
+    document.getElementById('gasoil').value = viajeEditando.gasoil;
+    document.getElementById('litrosGasoil').value = viajeEditando.litrosGasoil;
+    document.getElementById('gastos').value = viajeEditando.gastos;
+    document.getElementById('pago').value = viajeEditando.pago;
+    document.getElementById('entrada').value = viajeEditando.entrada;
+    document.getElementById('estadoPago').value = viajeEditando.estadoPago;
+
+    // Eliminar el viaje de la lista
+    viajes.splice(index, 1);
+    guardarDatos();
+    mostrarReporte();
+
+    // Mostrar mensaje de edición
+    document.getElementById('mensaje-edicion').style.display = 'block';
+
+    // Cambiar texto del botón a "Guardar Cambios"
+    document.querySelector('button[type="submit"]').textContent = 'Guardar Cambios';
+}
+
+function guardarCambios() {
+    viajeEditando.fecha = document.getElementById('fecha').value;
+    viajeEditando.empresa = document.getElementById('empresa').value;
+    viajeEditando.chofer = document.getElementById('chofer').value;
+    viajeEditando.placa = document.getElementById('placa').value;
+    viajeEditando.salida = document.getElementById('salida').value;
+    viajeEditando.destino = document.getElementById('destino').value;
+    viajeEditando.viaticos = parseFloat(document.getElementById('viaticos').value);
+    viajeEditando.gasoil = parseFloat(document.getElementById('gasoil').value);
+    viajeEditando.litrosGasoil = parseFloat(document.getElementById('litrosGasoil').value);
+    viajeEditando.gastos = parseFloat(document.getElementById('gastos').value);
+    viajeEditando.pago = parseFloat(document.getElementById('pago').value);
+    viajeEditando.entrada = parseFloat(document.getElementById('entrada').value);
+    viajeEditando.estadoPago = document.getElementById('estadoPago').value;
+
+    viajes.push(viajeEditando);
+    guardarDatos();
+    mostrarReporte();
+
+    document.getElementById('vehiculoForm').reset();
+    editing = false;
+    viajeEditando = null;
+
+    // Ocultar mensaje de edición
+    document.getElementById('mensaje-edicion').style.display = 'none';
+
+    // Cambiar texto del botón a "Agregar Viaje"
+    document.querySelector('button[type="submit"]').textContent = 'Agregar Viaje';
+}
+
+function eliminarViaje(index) {
+    viajes.splice(index, 1);
+    guardarDatos();
+    mostrarReporte();
+}
+
+function imprimirViaje(index) {
+    const viaje = document.querySelectorAll('#reporte div')[index];
+    const printContent = viaje.cloneNode(true);
+    printContent.querySelectorAll('button').forEach(button => button.remove());
+    const printWindow = window.open('', '', 'height=400,width=600');
+    printWindow.document.write('<html><head><title>Imprimir Viaje</title></head><body>');
+    printWindow.document.write(printContent.innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+
+function mostrarReporte() {
+    const reporteDiv = document.getElementById('reporte');
+    reporteDiv.innerHTML = ''; // Limpiar reporte
+
+    viajes.forEach((viaje, index) => {
+        const viajeReporte = document.createElement('div');
+        viajeReporte.innerHTML = `
+            <h3>Viaje #${index + 1}</h3>
             <p><strong>Fecha:</strong> ${viaje.fecha}</p>
             <p><strong>Empresa:</strong> ${viaje.empresa}</p>
             <p><strong>Chofer:</strong> ${viaje.chofer}</p>
             <p><strong>Placa:</strong> ${viaje.placa}</p>
             <p><strong>Salida:</strong> ${viaje.salida}</p>
             <p><strong>Destino:</strong> ${viaje.destino}</p>
-            <p><strong>Viáticos (USD):</strong> $${viaje.viaticos}</p>
-            <p><strong>Gasoil (USD):</strong> $${viaje.gasoil}</p>
+            <p><strong>Viáticos (USD):</strong> ${viaje.viaticos}</p>
+            <p><strong>Gasoil (USD):</strong> ${viaje.gasoil}</p>
             <p><strong>Litros Consumidos de Gasoil:</strong> ${viaje.litrosGasoil}</p>
-            <p><strong>Gastos Adicionales (USD):</strong> $${viaje.gastos}</p>
-            <p><strong>Pago al Chofer (USD):</strong> $${viaje.pago}</p>
-            <p><strong>Entrada por Realizar el Servicio (USD):</strong> $${viaje.entrada}</p>
-            <p><strong>Ganancias Netas (USD):</strong> $${viaje.gananciasNetas}</p>
+            <p><strong>Gastos Adicionales (USD):</strong> ${viaje.gastos}</p>
+            <p><strong>Pago al Chofer (USD):</strong> ${viaje.pago}</p>
+            <p><strong>Entrada por Realizar el Servicio (USD):</strong> ${viaje.entrada}</p>
+            <p><strong>Ganancias Netas (USD):</strong> ${viaje.gananciasNetas}</p>
             <p class="${viaje.estadoPago === 'Falta por cobrar' ? 'falta-cobrar' : 'pagado'}"><strong>Estado de Pago:</strong> ${viaje.estadoPago}</p>
-            <button onclick="editarViaje(this)">Editar</button>
-            <button onclick="eliminarViaje(this)">Eliminar</button>
-            <button onclick="convertirYCompartirPDF(this)">Convertir y Compartir PDF</button>
+            <button onclick="editarViaje(${index})">Editar</button>
+            <button onclick="eliminarViaje(${index})">Eliminar</button>
+            <button onclick="imprimirViaje(${index})">Imprimir</button>
             <hr>
         `;
-        reporte.appendChild(viajeElement);
-
-        document.getElementById('vehiculoForm').reset();
+        reporteDiv.appendChild(viajeReporte);
     });
+}
 
-    convertirPdf.addEventListener('click', function () {
-        // Ocultar botones antes de convertir a PDF
-        const buttons = document.querySelectorAll('#reporte button');
-        buttons.forEach(button => button.style.display = 'none');
+function guardarDatos() {
+    localStorage.setItem('viajes', JSON.stringify(viajes));
+}
 
-        html2pdf().from(reporte).save('reporte.pdf').then(function() {
-            // Restaurar la visualización de los botones después de la conversión
-            buttons.forEach(button => button.style.display = '');
-        });
-    });
-
-    function saveFormData(formData) {
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-        localStorage.setItem('formData', JSON.stringify(data));
-    }
-
-    function loadFormData() {
-        const savedData = JSON.parse(localStorage.getItem('formData'));
-        if (savedData) {
-            Object.keys(savedData).forEach(key => {
-                const input = document.querySelector(`[name="${key}"]`);
-                if (input) {
-                    input.value = savedData[key];
-                }
-            });
-        }
-    }
-
-    window.convertirYCompartirPDF = function (button) {
-        const viaje = button.parentElement;
-        // Ocultar los botones antes de convertir a PDF
-        const buttons = viaje.querySelectorAll('button');
-        buttons.forEach(button => button.style.display = 'none');
-
-        html2pdf(viaje, {
-            margin: 1,
-            filename: 'reporte-viaje.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        }).then(function(pdf) {
-            // Restaurar la visualización de los botones después de la conversión
-            buttons.forEach(button => button.style.display = '');
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const pdfData = e.target.result;
-                const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent('Por favor revisa el reporte de viaje adjunto.')}&attachment=${encodeURIComponent(pdfData)}`;
-                window.open(whatsappLink, '_blank');
-            };
-            reader.readAsDataURL(pdf.output('blob'));
-            alert('El reporte se ha convertido a PDF y se está compartiendo por WhatsApp.');
-        });
-    };
-
-    window.editarViaje = function (button) {
-        const viaje = button.parentElement;
-        document.getElementById('fecha').value = viaje.querySelector('p:nth-child(1)').innerText.split(': ')[1];
-        document.getElementById('empresa').value = viaje.querySelector('p:nth-child(2)').innerText.split(': ')[1];
-        document.getElementById('chofer').value = viaje.querySelector('p:nth-child(3)').innerText.split(': ')[1];
-        document.getElementById('placa').value = viaje.querySelector('p:nth-child(4)').innerText.split(': ')[1];
-        document.getElementById('salida').value = viaje.querySelector('p:nth-child(5)').innerText.split(': ')[1];
-        document.getElementById('destino').value = viaje.querySelector('p:nth-child(6)').innerText.split(': ')[1];
-        document.getElementById('viaticos').value = viaje.querySelector('p:nth-child(7)').innerText.split(': ')[1];
-        document.getElementById('gasoil').value = viaje.querySelector('p:nth-child(8)').innerText.split(': ')[1];
-        document.getElementById('litrosGasoil').value = viaje.querySelector('p:nth-child(9)').innerText.split(': ')[1];
-        document.getElementById('gastos').value = viaje.querySelector('p:nth-child(10)').innerText.split(': ')[1];
-        document.getElementById('pago').value = viaje.querySelector('p:nth-child(11)').innerText.split(': ')[1];
-        document.getElementById('entrada').value = viaje.querySelector('p:nth-child(12)').innerText.split(': ')[1];
-        document.getElementById('estadoPago').value = viaje.querySelector('p:nth-child(14)').innerText.split(': ')[1];
-        viaje.remove();
-    };
-
-    window.eliminarViaje = function (button) {
-        const viaje = button.parentElement;
-        viaje.remove();
-    };
-
-    window.imprimirViaje = function (button) {
-        const viaje = button.parentElement;
-        const printContent = viaje.cloneNode(true);
-        printContent.querySelectorAll('button').forEach(button => button.remove());
-        const printWindow = window.open('', '', 'height=400,width=600');
-        printWindow.document.write('<html><head><title>Imprimir Viaje</title></head><body>');
-        printWindow.document.write(printContent.innerHTML);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();
-    };
-});
+function cargarDatos() {
+    mostrarReporte();
+}
