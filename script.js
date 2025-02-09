@@ -125,6 +125,35 @@ function imprimirViaje(index) {
     printWindow.print();
 }
 
+function compartirViaje(index) {
+    const viaje = viajes[index];
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const reporte = `
+        Viaje #${index + 1}
+        Fecha: ${viaje.fecha}
+        Empresa: ${viaje.empresa}
+        Chofer: ${viaje.chofer}
+        Placa: ${viaje.placa}
+        Salida: ${viaje.salida}
+        Destino: ${viaje.destino}
+        Viáticos (USD): ${viaje.viaticos}
+        Gasoil (USD): ${viaje.gasoil}
+        Litros Consumidos de Gasoil: ${viaje.litrosGasoil}
+        Gastos Adicionales (USD): ${viaje.gastos}
+        Pago al Chofer (USD): ${viaje.pago}
+        Entrada por Realizar el Servicio (USD): ${viaje.entrada}
+        Ganancias Netas (USD): ${viaje.gananciasNetas}
+        Estado de Pago: ${viaje.estadoPago}
+    `;
+
+    doc.text(reporte, 10, 10);
+    doc.save(`reporte_viaje_${index + 1}.pdf`);
+
+    // Aquí puedes agregar la lógica para compartir el archivo PDF vía correo o WhatsApp.
+}
+
 function mostrarReporte() {
     const reporteDiv = document.getElementById('reporte');
     reporteDiv.innerHTML = '';
@@ -145,13 +174,14 @@ function mostrarReporte() {
             <p><strong>Gastos Adicionales (USD):</strong> ${viaje.gastos}</p>
             <p><strong>Pago al Chofer (USD):</strong> ${viaje.pago}</p>
             <p><strong>Entrada por Realizar el Servicio (USD):</strong> ${viaje.entrada}</p>
-            <p><strong>Ganancias Netas (USD):</strong> ${viaje.gananciasNetas}</p>
+            <p><strong>Ganancias Netas (USD): ${viaje.gananciasNetas}</p>
             <p class="${viaje.estadoPago === 'Falta por cobrar' ? 'falta-cobrar' : 'pagado'}"><strong>Estado de Pago:</strong> ${viaje.estadoPago}</p>
             <button onclick="editarViaje(${index})">Editar</button>
             <button onclick="eliminarViaje(${index})">Eliminar</button>
             <button onclick="imprimirViaje(${index})">Imprimir</button>
+            <button onclick="compartirViaje(${index})">Compartir</button>
             <hr>
-        `;
+ `;
         reporteDiv.appendChild(viajeReporte);
     });
 }
