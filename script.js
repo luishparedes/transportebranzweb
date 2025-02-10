@@ -118,40 +118,11 @@ function imprimirViaje(index) {
     const printContent = viaje.cloneNode(true);
     printContent.querySelectorAll('button').forEach(button => button.remove());
     const printWindow = window.open('', '', 'height=400,width=600');
-    printWindow.document.write('<html><head><title>Imprimir Viaje</title></head><body>');
+    printWindow.document.write('<html><head><title>Imprimir Viaje</title><style>@media print { body { -webkit-print-color-adjust: exact; } }</style></head><body>');
     printWindow.document.write(printContent.innerHTML);
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print();
-}
-
-function compartirViaje(index) {
-    const viaje = viajes[index];
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const reporte = `
-        Viaje #${index + 1}
-        Fecha: ${viaje.fecha}
-        Empresa: ${viaje.empresa}
-        Chofer: ${viaje.chofer}
-        Placa: ${viaje.placa}
-        Salida: ${viaje.salida}
-        Destino: ${viaje.destino}
-        Viáticos (USD): ${viaje.viaticos}
-        Gasoil (USD): ${viaje.gasoil}
-        Litros Consumidos de Gasoil: ${viaje.litrosGasoil}
-        Gastos Adicionales (USD): ${viaje.gastos}
-        Pago al Chofer (USD): ${viaje.pago}
-        Entrada por Realizar el Servicio (USD): ${viaje.entrada}
-        Ganancias Netas (USD): ${viaje.gananciasNetas}
-        Estado de Pago: ${viaje.estadoPago}
-    `;
-
-    doc.text(reporte, 10, 10);
-    doc.save(`reporte_viaje_${index + 1}.pdf`);
-
-    // Aquí puedes agregar la lógica para compartir el archivo PDF vía correo o WhatsApp.
 }
 
 function mostrarReporte() {
@@ -179,7 +150,6 @@ function mostrarReporte() {
             <button onclick="editarViaje(${index})">Editar</button>
             <button onclick="eliminarViaje(${index})">Eliminar</button>
             <button onclick="imprimirViaje(${index})">Imprimir</button>
-            <button onclick="compartirViaje(${index})">Compartir</button>
             <hr>
  `;
         reporteDiv.appendChild(viajeReporte);
