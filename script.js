@@ -120,6 +120,36 @@ function imprimirViaje(index) {
     printWindow.print();
 }
 
+// Función para generar el PDF
+function generarPDF(index) {
+    const viaje = viajes[index];
+
+    // Crear un nuevo documento PDF
+    const doc = new jsPDF();
+
+    // Agregar contenido al PDF
+    doc.setFontSize(18);
+    doc.text('TRANSPORTE BRAZ', 10, 10);
+    doc.setFontSize(12);
+    doc.text(`Fecha: ${viaje.fecha}`, 10, 20);
+    doc.text(`Empresa: ${viaje.empresa}`, 10, 30);
+    doc.text(`Chofer: ${viaje.chofer}`, 10, 40);
+    doc.text(`Placa: ${viaje.placa}`, 10, 50);
+    doc.text(`Salida: ${viaje.salida}`, 10, 60);
+    doc.text(`Destino: ${viaje.destino}`, 10, 70);
+    doc.text(`Viáticos: ${viaje.viaticos} USD`, 10, 80);
+    doc.text(`Gasoil: ${viaje.gasoil} USD`, 10, 90);
+    doc.text(`Litros de Gasoil: ${viaje.litrosGasoil}`, 10, 100);
+    doc.text(`Gastos Adicionales: ${viaje.gastos} USD`, 10, 110);
+    doc.text(`Pago al Chofer: ${viaje.pago} USD`, 10, 120);
+    doc.text(`Entrada: ${viaje.entrada} USD`, 10, 130);
+    doc.text(`Ganancias Netas: ${viaje.gananciasNetas} USD`, 10, 140);
+    doc.text(`Estado de Pago: ${viaje.estadoPago}`, 10, 150);
+
+    // Guardar el PDF
+    doc.save(`Viaje_${index + 1}.pdf`);
+}
+
 function mostrarReporte() {
     const reporteDiv = document.getElementById('reporte');
     reporteDiv.innerHTML = '';
@@ -145,8 +175,9 @@ function mostrarReporte() {
             <button onclick="editarViaje(${index})">Editar</button>
             <button onclick="eliminarViaje(${index})">Eliminar</button>
             <button onclick="imprimirViaje(${index})">Imprimir</button>
+            <button onclick="generarPDF(${index})">Compartir</button>
             <hr>
- `;
+        `;
         reporteDiv.appendChild(viajeReporte);
     });
 }
