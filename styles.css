@@ -80,3 +80,21 @@ button:hover {
     margin-bottom: 10px;
     border-radius: 5px;
 }
+
+/* Estilos para impresión */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #reporte div, #reporte div * {
+        visibility: visible;
+    }
+    #reporte div {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    button {
+        display: none; /* Ocultar botones al imprimir */
+    }
+}
