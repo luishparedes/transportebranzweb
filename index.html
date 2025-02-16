@@ -4,41 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANSPORTE BRAZ</title>
-    <style>
-        /* Estilos básicos */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form label {
-            display: block;
-            margin-top: 10px;
-        }
-        form input, form select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #reporte div {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>TRANSPORTE BRAZ</h1>
+
     <div id="mensaje-edicion" style="display: none;">Estás editando un viaje</div>
 
     <form id="vehiculoForm">
@@ -90,9 +60,6 @@
     <h2>Reporte de Viajes</h2>
     <div id="reporte"></div>
 
-    <!-- Incluir la librería jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- Incluir el archivo JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
