@@ -116,13 +116,24 @@ function eliminarViaje(index) {
 function imprimirViaje(index) {
     const viaje = document.querySelectorAll('#reporte div')[index];
     const printContent = viaje.cloneNode(true);
+    
+    // Eliminar botones
     printContent.querySelectorAll('button').forEach(button => button.remove());
-    const printWindow = window.open('', '', 'height=400,width=600');
-    printWindow.document.write('<html><head><title>Imprimir Viaje</title></head><body>');
-    printWindow.document.write(printContent.innerHTML);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print();
+    
+    // Crear un contenedor temporal para la impresión
+    const printContainer = document.createElement('div');
+    printContainer.style.position = 'absolute';
+    printContainer.style.left = '-9999px';
+    printContainer.appendChild(printContent);
+    
+    // Agregar el contenedor al cuerpo del documento
+    document.body.appendChild(printContainer);
+    
+    // Imprimir directamente en la misma ventana
+    window.print();
+    
+    // Eliminar el contenedor temporal después de imprimir
+    document.body.removeChild(printContainer);
 }
 
 function mostrarReporte() {
