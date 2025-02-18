@@ -188,9 +188,11 @@ function enviarWhatsApp(index) {
         *Estado de Pago:* ${viaje.estadoPago}
     `;
 
-    const numeroTelefono = '04125453018';
+    // Número de teléfono en formato internacional (sin el signo +)
+    const numeroTelefono = '584125453018';
     const enlaceWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
 
+    // Abrir el enlace en una nueva pestaña
     window.open(enlaceWhatsApp, '_blank');
 }
 
