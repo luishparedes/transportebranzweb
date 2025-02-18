@@ -166,7 +166,7 @@ function mostrarReporte() {
         `;
         reporteDiv.appendChild(viajeReporte);
     });
-}
+  }
 
 function enviarWhatsApp(index) {
     const viaje = viajes[index];
@@ -190,7 +190,19 @@ function enviarWhatsApp(index) {
 
     // Número de teléfono en formato internacional (sin el signo +)
     const numeroTelefono = '584125453018';
-    const enlaceWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+
+    // Verificar si el usuario está en un dispositivo móvil o en una computadora
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    let enlaceWhatsApp;
+
+    if (isMobile) {
+        // Enlace para dispositivos móviles
+        enlaceWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+    } else {
+        // Enlace para computadoras (WhatsApp Web)
+        enlaceWhatsApp = `https://web.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
+    }
 
     // Abrir el enlace en una nueva pestaña
     window.open(enlaceWhatsApp, '_blank');
