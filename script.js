@@ -188,10 +188,37 @@ function mostrarReporte() {
             <button onclick="eliminarViaje(${index})">Eliminar</button>
             <button onclick="imprimirViaje(${index})">Imprimir</button>
             <button onclick="generarPDF(${index})">Generar PDF</button>
+            <button onclick="enviarWhatsApp(${index})">Enviar</button> <--- Botón de Enviar
             <hr>
         `;
         reporteDiv.appendChild(viajeReporte);
     });
+}
+
+function enviarWhatsApp(index) {
+    const viaje = viajes[index];
+    const mensaje = `
+        *Detalles del Viaje ${index + 1}*
+        *Fecha:* ${viaje.fecha}
+        *Empresa:* ${viaje.empresa}
+        *Chofer:* ${viaje.chofer}
+        *Placa:* ${viaje.placa}
+        *Salida:* ${viaje.salida}
+        *Destino:* ${viaje.destino}
+        *Viáticos (USD):* ${viaje.viaticos}
+        *Gasoil (USD):* ${viaje.gasoil}
+        *Litros de Gasoil:* ${viaje.litrosGasoil}
+        *Gastos Adicionales (USD):* ${viaje.gastos}
+        *Pago al Chofer (USD):* ${viaje.pago}
+        *Entrada (USD):* ${viaje.entrada}
+        *Ganancias Netas (USD):* ${viaje.gananciasNetas}
+        *Estado de Pago:* ${viaje.estadoPago}
+    `;
+
+    const numeroTelefono = '+584125453018';
+    const enlaceWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+
+    window.open(enlaceWhatsApp, '_blank');
 }
 
 function guardarDatos() {
