@@ -136,32 +136,6 @@ function imprimirViaje(index) {
     document.body.removeChild(printContainer);
 }
 
-function generarPDF(index) {
-    const viaje = viajes[index];
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text("Detalles del Viaje", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Fecha: ${viaje.fecha}`, 10, 20);
-    doc.text(`Empresa: ${viaje.empresa}`, 10, 30);
-    doc.text(`Chofer: ${viaje.chofer}`, 10, 40);
-    doc.text(`Placa: ${viaje.placa}`, 10, 50);
-    doc.text(`Salida: ${viaje.salida}`, 10, 60);
-    doc.text(`Destino: ${viaje.destino}`, 10, 70);
-    doc.text(`Viáticos (USD): ${viaje.viaticos}`, 10, 80);
-    doc.text(`Gasoil (USD): ${viaje.gasoil}`, 10, 90);
-    doc.text(`Litros de Gasoil: ${viaje.litrosGasoil}`, 10, 100);
-    doc.text(`Gastos Adicionales (USD): ${viaje.gastos}`, 10, 110);
-    doc.text(`Pago al Chofer (USD): ${viaje.pago}`, 10, 120);
-    doc.text(`Entrada (USD): ${viaje.entrada}`, 10, 130);
-    doc.text(`Ganancias Netas (USD): ${viaje.gananciasNetas}`, 10, 140);
-    doc.text(`Estado de Pago: ${viaje.estadoPago}`, 10, 150);
-
-    doc.save(`Viaje_${index + 1}.pdf`);
-}
-
 function mostrarReporte() {
     const reporteDiv = document.getElementById('reporte');
     reporteDiv.innerHTML = '';
@@ -187,7 +161,6 @@ function mostrarReporte() {
             <button onclick="editarViaje(${index})">Editar</button>
             <button onclick="eliminarViaje(${index})">Eliminar</button>
             <button onclick="imprimirViaje(${index})">Imprimir</button>
-            <button onclick="generarPDF(${index})">Generar PDF</button>
             <button onclick="enviarWhatsApp(${index})">Enviar</button> <--- Botón de Enviar
             <hr>
         `;
@@ -215,7 +188,7 @@ function enviarWhatsApp(index) {
         *Estado de Pago:* ${viaje.estadoPago}
     `;
 
-    const numeroTelefono = '+584125453018';
+    const numeroTelefono = '04125453018';
     const enlaceWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
 
     window.open(enlaceWhatsApp, '_blank');
