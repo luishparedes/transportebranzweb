@@ -13,6 +13,13 @@
     <div id="mensaje-edicion" style="display: none;">Estás editando un viaje</div>
 
     <form id="vehiculoForm">
+        <!-- Selector de Moneda -->
+        <label for="moneda">Moneda:</label>
+        <select id="moneda" name="moneda" required>
+            <option value="USD">Dólares (USD)</option>
+            <option value="VES">Bolívares (VES)</option>
+        </select><br><br>
+
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" required><br><br>
 
@@ -31,22 +38,29 @@
         <label for="destino">Destino:</label>
         <input type="text" id="destino" name="destino" required><br><br>
 
-        <label for="viaticos">Viáticos (USD):</label>
+        <label for="viaticos">Viáticos:</label>
         <input type="number" id="viaticos" name="viaticos" required><br><br>
 
-        <label for="gasoil">Gasoil (USD):</label>
+        <label for="gasoil">Gasoil:</label>
         <input type="number" id="gasoil" name="gasoil" required><br><br>
 
         <label for="litrosGasoil">Litros Consumidos de Gasoil:</label>
         <input type="number" id="litrosGasoil" name="litrosGasoil" required><br><br>
 
-        <label for="gastos">Gastos Adicionales (USD):</label>
+        <label for="gastos">Gastos Adicionales:</label>
         <input type="number" id="gastos" name="gastos" required><br><br>
 
-        <label for="pago">Pago al Chofer (USD):</label>
+        <!-- Nuevos campos -->
+        <label for="gastosExtras">Gastos Extras:</label>
+        <input type="number" id="gastosExtras" name="gastosExtras" required><br><br>
+
+        <label for="peajes">Peajes:</label>
+        <input type="number" id="peajes" name="peajes" required><br><br>
+
+        <label for="pago">Pago al Chofer:</label>
         <input type="number" id="pago" name="pago" required><br><br>
 
-        <label for="entrada">Entrada por Realizar el Servicio (USD):</label>
+        <label for="entrada">Entrada por Realizar el Servicio:</label>
         <input type="number" id="entrada" name="entrada" required><br><br>
 
         <label for="estadoPago">Estado de Pago:</label>
