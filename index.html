@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANSPORTE BRAZ</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <h1>TRANSPORTE BRAZ</h1>
 
-    <div id="mensaje-edicion" style="display: none;">Estás editando un viaje</div>
+    <!-- Mensaje flotante (toast) -->
+    <div id="toast" class="toast"></div>
 
+    <!-- Formulario para agregar/editar viajes -->
     <form id="vehiculoForm">
-        <!-- Selector de Moneda -->
+        <!-- Campo para el número de viaje -->
+        <label for="numeroViaje">Número de Viaje:</label>
+        <input type="number" id="numeroViaje" name="numeroViaje" required><br><br>
+
+        <!-- Selector de moneda -->
         <label for="moneda">Moneda:</label>
         <select id="moneda" name="moneda" required>
             <option value="USD">Dólares (USD)</option>
-            <option value="VES">Bolívares (VES)</option>
+            <option value="BS">Bolívares (BS)</option>
         </select><br><br>
 
         <label for="fecha">Fecha:</label>
@@ -49,10 +54,6 @@
 
         <label for="gastos">Gastos Adicionales:</label>
         <input type="number" id="gastos" name="gastos" required><br><br>
-
-        <!-- Nuevos campos -->
-        <label for="gastosExtras">Gastos Extras:</label>
-        <input type="number" id="gastosExtras" name="gastosExtras" required><br><br>
 
         <label for="peajes">Peajes:</label>
         <input type="number" id="peajes" name="peajes" required><br><br>
