@@ -15,6 +15,7 @@ document.getElementById('vehiculoForm').addEventListener('submit', function(even
 });
 
 function agregarViaje() {
+    const numeroViaje = document.getElementById('numeroViaje').value;
     const moneda = document.getElementById('moneda').value;
     const fecha = document.getElementById('fecha').value;
     const empresa = document.getElementById('empresa').value;
@@ -26,16 +27,15 @@ function agregarViaje() {
     const gasoil = parseFloat(document.getElementById('gasoil').value);
     const litrosGasoil = parseFloat(document.getElementById('litrosGasoil').value);
     const gastos = parseFloat(document.getElementById('gastos').value);
-    const gastosExtras = parseFloat(document.getElementById('gastosExtras').value);
     const peajes = parseFloat(document.getElementById('peajes').value);
     const pago = parseFloat(document.getElementById('pago').value);
     const entrada = parseFloat(document.getElementById('entrada').value);
     const estadoPago = document.getElementById('estadoPago').value;
 
-    // Cálculo de ganancias netas
-    const gananciasNetas = entrada - viaticos - gasoil - gastos - gastosExtras - peajes - pago;
+    const gananciasNetas = entrada - viaticos - gasoil - gastos - peajes - pago;
 
     const nuevoViaje = {
+        numeroViaje: numeroViaje,
         moneda: moneda,
         fecha: fecha,
         empresa: empresa,
@@ -47,7 +47,6 @@ function agregarViaje() {
         gasoil: gasoil,
         litrosGasoil: litrosGasoil,
         gastos: gastos,
-        gastosExtras: gastosExtras,
         peajes: peajes,
         pago: pago,
         entrada: entrada,
@@ -65,6 +64,8 @@ function editarViaje(index) {
     editing = true;
     viajeEditando = viajes[index];
 
+    // Cargar datos en el formulario
+    document.getElementById('numeroViaje').value = viajeEditando.numeroViaje;
     document.getElementById('moneda').value = viajeEditando.moneda;
     document.getElementById('fecha').value = viajeEditando.fecha;
     document.getElementById('empresa').value = viajeEditando.empresa;
@@ -76,21 +77,20 @@ function editarViaje(index) {
     document.getElementById('gasoil').value = viajeEditando.gasoil;
     document.getElementById('litrosGasoil').value = viajeEditando.litrosGasoil;
     document.getElementById('gastos').value = viajeEditando.gastos;
-    document.getElementById('gastosExtras').value = viajeEditando.gastosExtras;
     document.getElementById('peajes').value = viajeEditando.peajes;
     document.getElementById('pago').value = viajeEditando.pago;
     document.getElementById('entrada').value = viajeEditando.entrada;
     document.getElementById('estadoPago').value = viajeEditando.estadoPago;
 
-    viajes.splice(index, 1);
-    guardarDatos();
-    mostrarReporte();
+    // Mostrar mensaje flotante
+    mostrarToast("Estás editando un viaje. Modifica los campos necesarios.");
 
-    document.getElementById('mensaje-edicion').style.display = 'block';
+    // Cambiar el texto del botón
     document.querySelector('button[type="submit"]').textContent = 'Guardar Cambios';
 }
 
 function guardarCambios() {
+    viajeEditando.numeroViaje = document.getElementById('numeroViaje').value;
     viajeEditando.moneda = document.getElementById('moneda').value;
     viajeEditando.fecha = document.getElementById('fecha').value;
     viajeEditando.empresa = document.getElementById('empresa').value;
@@ -102,7 +102,6 @@ function guardarCambios() {
     viajeEditando.gasoil = parseFloat(document.getElementById('gasoil').value);
     viajeEditando.litrosGasoil = parseFloat(document.getElementById('litrosGasoil').value);
     viajeEditando.gastos = parseFloat(document.getElementById('gastos').value);
-    viajeEditando.gastosExtras = parseFloat(document.getElementById('gastosExtras').value);
     viajeEditando.peajes = parseFloat(document.getElementById('peajes').value);
     viajeEditando.pago = parseFloat(document.getElementById('pago').value);
     viajeEditando.entrada = parseFloat(document.getElementById('entrada').value);
@@ -116,8 +115,11 @@ function guardarCambios() {
     editing = false;
     viajeEditando = null;
 
-    document.getElementById('mensaje-edicion').style.display = 'none';
+    // Cambiar el texto del botón
     document.querySelector('button[type="submit"]').textContent = 'Agregar Viaje';
+
+    // Mostrar mensaje flotante
+    mostrarToast("Cambios guardados correctamente.");
 }
 
 function eliminarViaje(index) {
@@ -156,7 +158,7 @@ function mostrarReporte() {
     viajes.forEach((viaje, index) => {
         const viajeReporte = document.createElement('div');
         viajeReporte.innerHTML = `
-            <h3>Viaje #${index + 1}</h3>
+            <h3>Viaje #${viaje.numeroViaje}</h3>
             <p><strong>Moneda:</strong> ${viaje.moneda}</p>
             <p><strong>Fecha:</strong> ${viaje.fecha}</p>
             <p><strong>Empresa:</strong> ${viaje.empresa}</p>
@@ -168,7 +170,6 @@ function mostrarReporte() {
             <p><strong>Gasoil:</strong> ${viaje.gasoil} ${viaje.moneda}</p>
             <p><strong>Litros Consumidos de Gasoil:</strong> ${viaje.litrosGasoil}</p>
             <p><strong>Gastos Adicionales:</strong> ${viaje.gastos} ${viaje.moneda}</p>
-            <p><strong>Gastos Extras:</strong> ${viaje.gastosExtras} ${viaje.moneda}</p>
             <p><strong>Peajes:</strong> ${viaje.peajes} ${viaje.moneda}</p>
             <p><strong>Pago al Chofer:</strong> ${viaje.pago} ${viaje.moneda}</p>
             <p><strong>Entrada por Realizar el Servicio:</strong> ${viaje.entrada} ${viaje.moneda}</p>
@@ -187,7 +188,7 @@ function mostrarReporte() {
 function enviarWhatsApp(index) {
     const viaje = viajes[index];
     const mensaje = `
-        *Detalles del Viaje ${index + 1}*
+        *Detalles del Viaje ${viaje.numeroViaje}*
         *Moneda:* ${viaje.moneda}
         *Fecha:* ${viaje.fecha}
         *Empresa:* ${viaje.empresa}
@@ -199,7 +200,6 @@ function enviarWhatsApp(index) {
         *Gasoil:* ${viaje.gasoil} ${viaje.moneda}
         *Litros de Gasoil:* ${viaje.litrosGasoil}
         *Gastos Adicionales:* ${viaje.gastos} ${viaje.moneda}
-        *Gastos Extras:* ${viaje.gastosExtras} ${viaje.moneda}
         *Peajes:* ${viaje.peajes} ${viaje.moneda}
         *Pago al Chofer:* ${viaje.pago} ${viaje.moneda}
         *Entrada:* ${viaje.entrada} ${viaje.moneda}
@@ -215,6 +215,17 @@ function enviarWhatsApp(index) {
 
     // Abrir el enlace en una nueva pestaña
     window.open(enlaceWhatsApp, '_blank');
+}
+
+function mostrarToast(mensaje) {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensaje;
+    toast.classList.add('show');
+
+    // Ocultar el toast después de 3 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 }
 
 function guardarDatos() {
